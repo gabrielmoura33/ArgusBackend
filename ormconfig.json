@@ -6,7 +6,7 @@
     "port": "5432",
     "username": "postgres",
     "password": "docker",
-    "database": "gostack_gobarber",
+    "database": "argus_psql_dev",
     "entities": [
       "./src/modules/**/infra/typeorm/entities/*.ts"
     ],
@@ -22,11 +22,10 @@
     "type": "mongodb",
     "host": "localhost",
     "port": "27017",
-    "database": "gostack_gobarber",
+    "database": "Argus_MONGO_DEV",
     "entities": [
       "./src/modules/**/infra/typeorm/schemas/*.ts"
     ],
     "useUnifiedTopology": true
   }
-
 ]
