@@ -24,6 +24,7 @@ class UsersRepository implements IUsersRepository {
       users = await this.ormRepository.find({
         where: {
           id: Not(except_user_id),
+          isProvider: true,
         },
       });
     } else {

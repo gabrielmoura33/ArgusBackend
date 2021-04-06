@@ -27,10 +27,23 @@ class ListProvidersService {
         except_user_id: user_id,
       });
 
-      await this.cacheProvider.save(`providers-list:${user_id}`, users);
+      await this.cacheProvider.save(
+        `providers-list:${user_id}`,
+        users.map(u => {
+          return {
+            id: u.id,
+            name: u.name,
+            email: u.email,
+            isProvider: u.isProvider,
+            avatar: u.avatar,
+            created_at: u.created_at,
+            updated_at: u.updated_at,
+          };
+        }),
+      );
     }
 
-    return users;
+    return classToClass(users);
   }
 }
 

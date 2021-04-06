@@ -18,9 +18,32 @@ export default class CreateUsers1587762844474 implements MigrationInterface {
             type: 'varchar',
           },
           {
+            name: 'age',
+            type: 'integer',
+            isNullable: true,
+          },
+          {
             name: 'email',
             type: 'varchar',
             isUnique: true,
+          },
+          {
+            name: 'isProvider',
+            type: 'boolean',
+            isNullable: true,
+            default: false,
+          },
+          {
+            name: 'isFacebookUser',
+            type: 'boolean',
+            isNullable: true,
+            default: false,
+          },
+          {
+            name: 'isGoogleUser',
+            type: 'boolean',
+            isNullable: true,
+            default: false,
           },
           {
             name: 'password',
@@ -32,7 +55,7 @@ export default class CreateUsers1587762844474 implements MigrationInterface {
             default: 'now()',
           },
           {
-            name: 'update_at',
+            name: 'updated_at',
             type: 'timestamp',
             default: 'now()',
           },

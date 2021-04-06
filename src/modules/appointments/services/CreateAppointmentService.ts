@@ -7,9 +7,7 @@ import IAppointmentsRepostory from '../repositories/IAppointmentsRepository';
 
 interface IRequest {
   provider_id: string;
-
   user_id: string;
-
   date: Date;
 }
 
@@ -39,9 +37,7 @@ class CreateAppointmentService {
     if (user_id === provider_id) {
       throw new AppError('You cant Create an appointment to yourself');
     }
-    if (getHours(appointmentDate) < 8 || getHours(appointmentDate) > 17) {
-      throw new AppError('You cant Create Before 8AM and After 17PM');
-    }
+
     if (findAppointmentsInSameDate) {
       throw new AppError('Already have an appointment in this date');
     }

@@ -9,6 +9,7 @@ interface IRequest {
   name: string;
   email: string;
   password: string;
+  isProvider: boolean;
 }
 @injectable()
 class CreateUserService {
@@ -23,7 +24,12 @@ class CreateUserService {
     private cacheProvider: ICacheProvider,
   ) {}
 
-  public async execute({ name, email, password }: IRequest): Promise<User> {
+  public async execute({
+    name,
+    email,
+    password,
+    isProvider,
+  }: IRequest): Promise<User> {
     const userExist = await this.userRepository.findByEmail(email);
 
     if (userExist) {
@@ -36,6 +42,7 @@ class CreateUserService {
       name,
       email,
       password: encryptedPassword,
+      isProvider,
     });
 
     await this.cacheProvider.invalidatePrefix('providers-list');

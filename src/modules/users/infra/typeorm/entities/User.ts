@@ -24,13 +24,28 @@ class User {
   password: string;
 
   @Column()
+  @Exclude()
+  age: number;
+
+  @Column()
+  @Exclude()
+  isFacebookUser: boolean;
+
+  @Column()
+  isProvider: boolean;
+
+  @Exclude()
+  @Column()
+  isGoogleUser: boolean;
+
+  @Column()
   avatar: string;
 
   @CreateDateColumn()
   created_at: Date;
 
   @UpdateDateColumn()
-  update_at: Date;
+  updated_at: Date;
 
   @Expose({ name: 'avatar_url' })
   get avatar_url(): string | null {
