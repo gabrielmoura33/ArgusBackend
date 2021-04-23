@@ -5,10 +5,6 @@ import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
 import IFindAllProviersDTO from '@modules/users/dtos/IFindAllProvidersDTO';
 import User from '../entities/User';
 
-/*
- * Para usar as funções disponibilizadas pelo TypeORM a classe tem que extender Repository:
- * extends Repository<Appointment>
- */
 class UsersRepository implements IUsersRepository {
   private ormRepository: Repository<User>;
 
@@ -18,14 +14,17 @@ class UsersRepository implements IUsersRepository {
 
   public async findAllProviders({
     except_user_id,
+    filters,
   }: IFindAllProviersDTO): Promise<User[]> {
     let users: User[];
+
     if (except_user_id) {
       users = await this.ormRepository.find({
         where: {
           id: Not(except_user_id),
           isProvider: true,
         },
+        ...filters,
       });
     } else {
       users = await this.ormRepository.find();

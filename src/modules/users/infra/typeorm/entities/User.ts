@@ -38,6 +38,7 @@ class User {
   @Column()
   isGoogleUser: boolean;
 
+  @Exclude()
   @Column()
   avatar: string;
 
@@ -48,8 +49,10 @@ class User {
   updated_at: Date;
 
   @Expose({ name: 'avatar_url' })
-  get avatar_url(): string | null {
-    return this.avatar ? `http://localhost:3333/files/${this.avatar}` : null;
+  get avatarUrl(): string | null {
+    return this.avatar
+      ? `${process.env.APP_API_URL}/files/${this.avatar}`
+      : null;
   }
 }
 export default User;

@@ -9,7 +9,7 @@
       "request": "attach",
       "protocol": "inspector",
       "restart": true,
-      "name": "Debug",
+      "name": "API -- LOCAL",
       "skipFiles": [
         "<node_internals>/**"
       ],

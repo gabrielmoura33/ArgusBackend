@@ -1,9 +1,9 @@
+*.env
 node_modules/
 .vscode/
 build/
 temp/
-
 tmp/*
 !tmp/.gitkeep
+coverage/
 
-.env

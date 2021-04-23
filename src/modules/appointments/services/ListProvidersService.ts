@@ -2,46 +2,47 @@ import User from '@modules/users/infra/typeorm/entities/User';
 import { injectable, inject } from 'tsyringe';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import { classToClass } from 'class-transformer';
-import { ICacheProvider } from '@shared/container/providers/CacheProvider/models/ICacheProdiver';
+import { IFilters } from '@shared/infra/interfaces/IFilters';
+import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
+import { FindManyOptions } from 'typeorm';
 
 interface IRequest {
   user_id: string;
+  filters: IFilters<ICreateUserDTO>;
 }
 @injectable()
 class ListProvidersService {
   constructor(
     @inject('UsersRepository')
     private userRepository: IUsersRepository,
-
-    @inject('CacheProvider')
-    private cacheProvider: ICacheProvider,
   ) {}
 
-  public async execute({ user_id }: IRequest): Promise<User[]> {
-    let users = await this.cacheProvider.recover<User[]>(
-      `providers-list:${user_id}`,
-    );
+  public async execute({ user_id, filters }: IRequest): Promise<User[]> {
+    const query: FindManyOptions<User> = {};
+    const { _count, _limit, _sort, _order, _page } = filters;
 
-    if (!users) {
-      users = await this.userRepository.findAllProviders({
-        except_user_id: user_id,
-      });
-
-      await this.cacheProvider.save(
-        `providers-list:${user_id}`,
-        users.map(u => {
-          return {
-            id: u.id,
-            name: u.name,
-            email: u.email,
-            isProvider: u.isProvider,
-            avatar: u.avatar,
-            created_at: u.created_at,
-            updated_at: u.updated_at,
-          };
-        }),
-      );
+    if (_limit) {
+      query.take = _limit;
     }
+
+    if (_page) {
+      query.skip = 10 * (_page - 1 < 0 ? 0 : _page - 1);
+    }
+
+    if (_sort) {
+      query.order = {
+        [_sort]: _order?.toUpperCase() || 'ASC',
+      };
+    } else if (_order) {
+      query.order = {
+        name: 'ASC',
+      };
+    }
+
+    const users = await this.userRepository.findAllProviders({
+      except_user_id: user_id,
+      filters: query,
+    });
 
     return classToClass(users);
   }
