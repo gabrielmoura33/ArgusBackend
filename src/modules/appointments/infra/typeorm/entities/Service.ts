@@ -6,13 +6,14 @@ import {
   UpdateDateColumn,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 
 import User from '@modules/users/infra/typeorm/entities/User';
-import Service from '@modules/appointments/infra/typeorm/entities/Service';
+import Appointment from './Appointment';
 
-@Entity('appointments')
-class Appointment {
+@Entity('services')
+class Service {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -23,20 +24,16 @@ class Appointment {
   @JoinColumn({ name: 'provider_id' })
   provider: User;
 
+  @OneToMany(() => Appointment, appointment => appointment.services)
+  appointments: Appointment[];
+
+  service: Service;
+
   @Column()
-  user_id: string;
+  description: string;
 
-  @ManyToOne(() => User)
-  @JoinColumn({ name: 'user_id' })
-  user: User;
-
-  @ManyToOne(() => Service, {
-    eager: true,
-  })
-  services: Service;
-
-  @Column('time with time zone')
-  date: Date;
+  @Column()
+  price: number;
 
   @CreateDateColumn()
   created_at: Date;
@@ -45,4 +42,4 @@ class Appointment {
   updated_at: Date;
 }
 
-export default Appointment;
+export default Service;

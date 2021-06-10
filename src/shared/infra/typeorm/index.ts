@@ -1,6 +1,5 @@
-import { createConnections } from 'typeorm';
+import { createConnection } from 'typeorm';
 
-createConnections().then(() => {
+createConnection().then(() => {
   console.log('🛰  Postgres Started');
-  console.log('🪐  MongoDB Started');
 });

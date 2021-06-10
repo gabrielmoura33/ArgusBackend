@@ -4,4 +4,5 @@ export interface IFilters<T> {
   _sort?: keyof T;
   _order?: 'asc' | 'desc';
   _count?: boolean;
+  _search?: string;
 }

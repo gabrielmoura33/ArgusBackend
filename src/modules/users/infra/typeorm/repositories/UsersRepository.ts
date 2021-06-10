@@ -1,4 +1,4 @@
-import { getRepository, Repository, Not } from 'typeorm';
+import { getRepository, Repository, Not, FindManyOptions } from 'typeorm';
 
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
@@ -39,6 +39,12 @@ class UsersRepository implements IUsersRepository {
     });
 
     return user || undefined;
+  }
+
+  public async countProviders(query?: FindManyOptions<User>): Promise<number> {
+    const countUsers = await this.ormRepository.count(query);
+
+    return countUsers;
   }
 
   public async findById(id: string): Promise<User | undefined> {

@@ -23,11 +23,15 @@ class User {
   @Exclude()
   password: string;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   @Exclude()
-  age: number;
+  birth_date: number;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   @Exclude()
   isFacebookUser: boolean;
 
@@ -35,11 +39,15 @@ class User {
   isProvider: boolean;
 
   @Exclude()
-  @Column()
+  @Column({
+    nullable: true,
+  })
   isGoogleUser: boolean;
 
   @Exclude()
-  @Column()
+  @Column({
+    nullable: true,
+  })
   avatar: string;
 
   @CreateDateColumn()

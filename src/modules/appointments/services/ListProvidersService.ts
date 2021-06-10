@@ -4,11 +4,15 @@ import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import { classToClass } from 'class-transformer';
 import { IFilters } from '@shared/infra/interfaces/IFilters';
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
-import { FindManyOptions } from 'typeorm';
+import { FindManyOptions, Like } from 'typeorm';
 
 interface IRequest {
   user_id: string;
   filters: IFilters<ICreateUserDTO>;
+  coordinates: {
+    latitude: number;
+    longitude: number;
+  };
 }
 @injectable()
 class ListProvidersService {
@@ -19,7 +23,7 @@ class ListProvidersService {
 
   public async execute({ user_id, filters }: IRequest): Promise<User[]> {
     const query: FindManyOptions<User> = {};
-    const { _count, _limit, _sort, _order, _page } = filters;
+    const { _limit, _sort, _order, _page, _search } = filters;
 
     if (_limit) {
       query.take = _limit;
@@ -37,6 +41,13 @@ class ListProvidersService {
       query.order = {
         name: 'ASC',
       };
+    }
+
+    if (_search) {
+      query.where = [
+        { name: Like(`%${_search}%`) },
+        { email: Like(`%${_search}%`) },
+      ];
     }
 
     const users = await this.userRepository.findAllProviders({

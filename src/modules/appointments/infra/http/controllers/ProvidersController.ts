@@ -8,13 +8,33 @@ import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
 export default class ProvidersController {
   public async index(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
-    const filters: IFilters<ICreateUserDTO> = request.query;
+    const {
+      _limit,
+      _page,
+      _sort,
+      _order,
+      _count,
+      _search,
+    }: IFilters<ICreateUserDTO> = request.query;
+    const { _latitude, _longitude } = request.query;
 
     const listProviders = container.resolve(ListProvidersService);
 
     const providers = await listProviders.execute({
       user_id,
-      filters: filters || {},
+      filters:
+        {
+          _limit,
+          _page,
+          _sort,
+          _order,
+          _count,
+          _search,
+        } || {},
+      coordinates: {
+        latitude: Number(_latitude) || 0,
+        longitude: Number(_longitude) || 0,
+      },
     });
 
     return response.json(classToClass(providers));
