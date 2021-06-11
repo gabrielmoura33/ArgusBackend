@@ -9,7 +9,7 @@ module.exports = [
       },
     } : {},
     type: "postgres",
-    logging: false,
+    logging: true,
     entities: [
       './src/modules/**/infra/typeorm/entities/*.ts'
     ],

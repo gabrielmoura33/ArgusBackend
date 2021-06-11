@@ -4,9 +4,18 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToOne,
+  JoinColumn,
+  OneToMany,
+  ManyToOne,
 } from 'typeorm';
 
 import { Exclude, Expose } from 'class-transformer';
+import Service from '@modules/appointments/infra/typeorm/entities/Service';
+import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment';
+import Address from './Address';
+import Statistic from './Statistic';
+import Profile from './Profile';
 
 @Entity('users')
 class User {
@@ -16,8 +25,11 @@ class User {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
+
+  @Column({ default: false })
+  mail_confirmed: boolean;
 
   @Column()
   @Exclude()
@@ -35,7 +47,7 @@ class User {
   @Exclude()
   isFacebookUser: boolean;
 
-  @Column()
+  @Column({ default: false })
   isProvider: boolean;
 
   @Exclude()
@@ -55,6 +67,30 @@ class User {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  @OneToOne(() => Address, { nullable: true })
+  @JoinColumn({ name: 'address_id' })
+  address: Address;
+
+  @OneToMany(() => Service, service => service.provider, { nullable: true })
+  services: Service[];
+
+  @OneToMany(() => Appointment, appointment => appointment.provider_id, {
+    nullable: true,
+  })
+  appointmentsProvider: Appointment[];
+
+  @OneToMany(() => Appointment, appointment => appointment.user_id, {
+    nullable: true,
+  })
+  appointmentsUser: Appointment[];
+
+  @OneToOne(() => Statistic)
+  statistics: Statistic;
+
+  @ManyToOne(() => Profile)
+  @JoinColumn({ name: 'profile_id' })
+  profile: Profile;
 
   @Expose({ name: 'avatar_url' })
   get avatarUrl(): string | null {

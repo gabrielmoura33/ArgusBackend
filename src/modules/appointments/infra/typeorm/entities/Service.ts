@@ -11,6 +11,7 @@ import {
 
 import User from '@modules/users/infra/typeorm/entities/User';
 import Appointment from './Appointment';
+import Category from './category';
 
 @Entity('services')
 class Service {
@@ -20,16 +21,10 @@ class Service {
   @Column()
   provider_id: string;
 
-  @ManyToOne(() => User)
-  @JoinColumn({ name: 'provider_id' })
-  provider: User;
-
-  @OneToMany(() => Appointment, appointment => appointment.services)
-  appointments: Appointment[];
-
-  service: Service;
-
   @Column()
+  name: string;
+
+  @Column({ nullable: true })
   description: string;
 
   @Column()
@@ -40,6 +35,17 @@ class Service {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'provider_id' })
+  provider: User;
+
+  @OneToMany(() => Appointment, appointment => appointment.services)
+  appointments: Appointment[];
+
+  @ManyToOne(() => Category)
+  @JoinColumn({ name: 'category_id' })
+  category: Category;
 }
 
 export default Service;
