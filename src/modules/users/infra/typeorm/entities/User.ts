@@ -43,6 +43,7 @@ class User {
 
   @Column({
     nullable: true,
+    default: false,
   })
   @Exclude()
   isFacebookUser: boolean;
@@ -53,6 +54,7 @@ class User {
   @Exclude()
   @Column({
     nullable: true,
+    default: false,
   })
   isGoogleUser: boolean;
 

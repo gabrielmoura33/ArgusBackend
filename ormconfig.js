@@ -8,8 +8,8 @@ module.exports = [
         rejectUnauthorized: false,
       },
     } : {},
-    type: "postgres",
-    logging: true,
+    type: 'postgres',
+    logging: false,
     entities: [
       './src/modules/**/infra/typeorm/entities/*.ts'
     ],
@@ -20,4 +20,15 @@ module.exports = [
       migrationsDir: 'src/shared/infra/typeorm/migrations'
     }
   },
+    {
+    name: 'mongo',
+    type: 'mongodb',
+    host: process.env.MONGODB_HOST,
+    port: 27017,
+    database: process.env.MONGODB_DATABASE,
+    entities: [
+      './src/modules/**/infra/typeorm/schemas/*.ts'
+    ],
+    useUnifiedTopology: true
+  }
 ]
