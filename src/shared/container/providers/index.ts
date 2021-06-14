@@ -11,10 +11,17 @@ import SESMailProvider from './MailProvider/implementations/SESMailProvider';
 
 import IMailTemplateProvider from './MailTemplateProvider/model/IMailTemplateProvider';
 import HandlebarsMailTemplateProvider from './MailTemplateProvider/implementations/HandlebarsMailTemplateProvider';
+import QueueApiProvider from './QueueProvider/implementations/QueueApiProvider';
+import { IQueueApiProvider } from './QueueProvider/model/IQueueApiProvider';
 
 container.registerSingleton<IStorageProvider>(
   'StorageProvider',
   DiskStorageProvider,
+);
+
+container.registerSingleton<IQueueApiProvider>(
+  'QueueApiProvider',
+  QueueApiProvider,
 );
 
 container.registerSingleton<IMailTemplateProvider>(

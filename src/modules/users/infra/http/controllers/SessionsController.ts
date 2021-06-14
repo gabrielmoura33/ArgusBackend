@@ -26,6 +26,9 @@ export default class SessionsController {
       email,
       password,
     });
-    return response.json({ user: classToClass(user), token });
+
+    response.setHeader('accessToken', token);
+
+    return response.json({ user: classToClass(user) });
   }
 }

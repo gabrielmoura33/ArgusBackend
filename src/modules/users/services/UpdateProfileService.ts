@@ -3,9 +3,12 @@
 import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
+import { Point } from 'geojson';
 import IUsersRepository from '../repositories/IUsersRepository';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 import User from '../infra/typeorm/entities/User';
+import ICreateAdressDTO from '../dtos/ICreateAdressDTO';
+import Address from '../infra/typeorm/entities/Address';
 
 interface IRequest {
   user_id: string;
@@ -13,6 +16,7 @@ interface IRequest {
   email: string;
   password?: string;
   old_password?: string;
+  address?: ICreateAdressDTO;
 }
 
 @injectable()
@@ -31,6 +35,7 @@ class UpdateProfileService {
     email,
     password,
     old_password,
+    address,
   }: IRequest): Promise<User> {
     const user = await this.userRepository.findById(user_id);
 
@@ -46,6 +51,29 @@ class UpdateProfileService {
 
     user.name = name;
     user.email = email;
+
+    if (address) {
+      let location;
+      const { coordinates } = address;
+      if (coordinates) {
+        location = {
+          type: 'Point',
+          coordinates: [coordinates.longitude, coordinates.latitude],
+        } as Point;
+      }
+
+      user.address = {
+        id: user.address?.id || undefined,
+        cep: address.cep,
+        city: address.city,
+        country: address.country || 'Brasil',
+        location: location || null,
+        number: address.number,
+        state: address.state,
+        street: address.street,
+        neighborhood: address.neighborhood,
+      } as Address;
+    }
 
     if (password && !old_password) {
       throw new AppError('Old password is not defined');
@@ -63,6 +91,7 @@ class UpdateProfileService {
 
       user.password = await this.hashProvider.generateHash(password);
     }
+
     return this.userRepository.save(user);
   }
 }

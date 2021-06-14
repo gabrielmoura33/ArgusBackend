@@ -70,7 +70,7 @@ class User {
   @UpdateDateColumn()
   updated_at: Date;
 
-  @OneToOne(() => Address, { nullable: true })
+  @OneToOne(() => Address, { nullable: true, cascade: true, eager: true })
   @JoinColumn({ name: 'address_id' })
   address: Address;
 
@@ -90,7 +90,7 @@ class User {
   @OneToOne(() => Statistic)
   statistics: Statistic;
 
-  @ManyToOne(() => Profile)
+  @ManyToOne(() => Profile, { cascade: true, eager: true })
   @JoinColumn({ name: 'profile_id' })
   profile: Profile;
 

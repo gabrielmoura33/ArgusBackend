@@ -21,7 +21,11 @@ class ListProvidersService {
     private userRepository: IUsersRepository,
   ) {}
 
-  public async execute({ user_id, filters }: IRequest): Promise<User[]> {
+  public async execute({
+    user_id,
+    filters,
+    coordinates,
+  }: IRequest): Promise<User[]> {
     const query: FindManyOptions<User> = {};
     const { _limit, _sort, _order, _page, _search } = filters;
 
@@ -48,6 +52,19 @@ class ListProvidersService {
         { name: Like(`%${_search}%`) },
         { email: Like(`%${_search}%`) },
       ];
+    }
+
+    if (coordinates) {
+      const users = await this.userRepository.filterByGeolocation(
+        {
+          _latitude: coordinates.latitude,
+          _longitude: coordinates.longitude,
+        },
+        user_id,
+        query,
+      );
+
+      return classToClass(users);
     }
 
     const users = await this.userRepository.findAllProviders({

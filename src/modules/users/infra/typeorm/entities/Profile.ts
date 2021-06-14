@@ -18,12 +18,12 @@ class Profile {
   name: string;
 
   @Column({ nullable: true })
-  description: number;
+  description: string;
 
   @Column({ default: 0 })
   price: number;
-  // CONSTRAINTS
 
+  // CONSTRAINTS
   @OneToMany(() => User, user => user.profile)
   users: User[];
 

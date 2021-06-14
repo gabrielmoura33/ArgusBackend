@@ -3,6 +3,8 @@ import { getRepository, Repository, Not, FindManyOptions } from 'typeorm';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
 import IFindAllProviersDTO from '@modules/users/dtos/IFindAllProvidersDTO';
+import { classToClass } from 'class-transformer';
+import { ICoordinates } from '@shared/dtos/ICoordinates';
 import User from '../entities/User';
 
 class UsersRepository implements IUsersRepository {
@@ -23,6 +25,7 @@ class UsersRepository implements IUsersRepository {
         where: {
           id: Not(except_user_id),
           isProvider: true,
+          mail_confirmed: true,
         },
         ...filters,
       });
@@ -54,10 +57,26 @@ class UsersRepository implements IUsersRepository {
   }
 
   public async create(userData: ICreateUserDTO): Promise<User> {
-    const user = this.ormRepository.create(userData);
+    this.ormRepository.create(userData);
 
-    await this.ormRepository.save(userData);
-    return user;
+    const user = await this.ormRepository.save(userData);
+
+    return classToClass(user);
+  }
+
+  public async filterByGeolocation(
+    coordinates: ICoordinates,
+    except_user_id?: string,
+    query?: FindManyOptions<User>,
+  ): Promise<User[]> {
+    console.log('got here');
+    const users = await this.ormRepository
+      .createQueryBuilder('users')
+      .select(['users.*'])
+      .leftJoin('users.address', 'addresses')
+      .getRawMany();
+
+    return users;
   }
 
   public async save(user: User): Promise<User> {

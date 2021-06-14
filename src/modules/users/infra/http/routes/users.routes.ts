@@ -20,6 +20,7 @@ usersRouter.post(
       email: Joi.string().email().required(),
       password: Joi.string().required(),
       isProvider: Joi.boolean(),
+      birth_date: Joi.date().timestamp(),
     },
   }),
   usersController.create,
