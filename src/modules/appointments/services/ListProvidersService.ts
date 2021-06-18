@@ -55,7 +55,7 @@ class ListProvidersService {
       ];
     }
 
-    if (coordinates) {
+    if (coordinates.latitude) {
       const users = await this.userRepository.filterByGeolocation(
         coordinates,
         user_id,
