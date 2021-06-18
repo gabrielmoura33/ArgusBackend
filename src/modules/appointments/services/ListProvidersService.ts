@@ -12,6 +12,7 @@ interface IRequest {
   coordinates: {
     latitude: number;
     longitude: number;
+    range: number;
   };
 }
 @injectable()
@@ -56,10 +57,7 @@ class ListProvidersService {
 
     if (coordinates) {
       const users = await this.userRepository.filterByGeolocation(
-        {
-          _latitude: coordinates.latitude,
-          _longitude: coordinates.longitude,
-        },
+        coordinates,
         user_id,
         query,
       );

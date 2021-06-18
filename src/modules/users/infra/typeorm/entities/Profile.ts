@@ -20,7 +20,7 @@ class Profile {
   @Column({ nullable: true })
   description: string;
 
-  @Column({ default: 0 })
+  @Column({ default: 0, type: 'float' })
   price: number;
 
   // CONSTRAINTS

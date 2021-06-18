@@ -65,15 +65,33 @@ class UsersRepository implements IUsersRepository {
   }
 
   public async filterByGeolocation(
-    coordinates: ICoordinates,
+    { latitude, longitude, range = 1 }: ICoordinates,
     except_user_id?: string,
     query?: FindManyOptions<User>,
   ): Promise<User[]> {
-    console.log('got here');
+    const origin = {
+      type: 'Point',
+      coordinates: [longitude, latitude],
+    };
+
     const users = await this.ormRepository
       .createQueryBuilder('users')
-      .select(['users.*'])
-      .leftJoin('users.address', 'addresses')
+      .select([
+        `users.id, users.name, users.email, CONCAT('${process.env.APP_API_URL}/files/', users.avatar) as avatar_url`,
+      ])
+      .innerJoin('users.address', 'addresses')
+
+      .where(
+        'ST_DWithin(addresses.location, ST_SetSRID(ST_GeomFromGeoJSON(:origin), ST_SRID(addresses.location)) ,:range)',
+      )
+      .andWhere('users.isProvider = true')
+      .setParameters({
+        // stringify GeoJSON
+        origin: JSON.stringify(origin),
+        range: range * 1000, // KM conversion
+      })
+      .limit(query?.take)
+      .skip(query?.skip)
       .getRawMany();
 
     return users;

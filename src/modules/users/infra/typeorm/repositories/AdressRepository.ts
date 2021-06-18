@@ -33,7 +33,7 @@ class AdressRepository implements IAdressRepository {
       .setParameters({
         // stringify GeoJSON
         origin: JSON.stringify(origin),
-        range: range * 1000, // KM conversion
+        range: 1000, // KM conversion
       })
       .getRawMany();
     return addresses;

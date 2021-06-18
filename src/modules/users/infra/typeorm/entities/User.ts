@@ -11,8 +11,8 @@ import {
 } from 'typeorm';
 
 import { Exclude, Expose } from 'class-transformer';
-import Service from '@modules/appointments/infra/typeorm/entities/Service';
-import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment';
+import Service from '../../../../appointments/infra/typeorm/entities/Service';
+import Appointment from '../../../../appointments/infra/typeorm/entities/Appointment';
 import Address from './Address';
 import Statistic from './Statistic';
 import Profile from './Profile';
@@ -39,7 +39,7 @@ class User {
     nullable: true,
   })
   @Exclude()
-  birth_date: number;
+  birth_date: Date;
 
   @Column({
     nullable: true,
