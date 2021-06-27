@@ -3,12 +3,14 @@ import multer from 'multer';
 
 import uploadConfig from '@config/upload';
 import { celebrate, Segments, Joi } from 'celebrate';
+
 import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 import UsersController from '../controllers/UsersController';
 import UserAvatarController from '../controllers/UserAvatarController';
 
 const usersController = new UsersController();
 const usersAvatarController = new UserAvatarController();
+
 const usersRouter = Router();
 const upload = multer(uploadConfig);
 
@@ -20,7 +22,7 @@ usersRouter.post(
       email: Joi.string().email().required(),
       password: Joi.string().required(),
       isProvider: Joi.boolean(),
-      birth_date: Joi.date().timestamp(),
+      birth_date: Joi.date(),
       address: Joi.object().optional(),
     },
   }),

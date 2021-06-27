@@ -4,11 +4,7 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  JoinColumn,
-  OneToOne,
 } from 'typeorm';
-
-import User from './User';
 
 @Entity('statistics')
 class Statistic {
@@ -23,11 +19,9 @@ class Statistic {
 
   @Column({ default: 0 })
   average_review: number;
-  // CONSTRAINTS
 
-  @OneToOne(() => User)
-  @JoinColumn({ name: 'provider_id' })
-  provider: User;
+  @Column({ type: 'text', nullable: true })
+  bio: string;
 
   @CreateDateColumn()
   created_at: Date;

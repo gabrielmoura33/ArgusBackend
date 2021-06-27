@@ -7,12 +7,15 @@ import { IQueueApiProvider } from '@shared/container/providers/QueueProvider/mod
 import IUsersRepository from '../repositories/IUsersRepository';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 import IUserTokensRepository from '../repositories/IUserTokensRepository';
+import IStatisticsRepository from '../repositories/IStatisticsRepository';
 
 interface IRequest {
   name: string;
   email: string;
   password: string;
   isProvider: boolean;
+  birth_date: Date;
+  mail_confirmed?: boolean;
 }
 @injectable()
 class CreateUserService {
@@ -31,6 +34,9 @@ class CreateUserService {
 
     @inject('QueueApiProvider')
     private queueApiProvider: IQueueApiProvider,
+
+    @inject('StatisticsRepository')
+    private statisticsRepository: IStatisticsRepository,
   ) {}
 
   public async execute({
@@ -38,6 +44,8 @@ class CreateUserService {
     email,
     password,
     isProvider,
+    birth_date,
+    mail_confirmed = false,
   }: IRequest): Promise<User> {
     const userExist = await this.userRepository.findByEmail(email);
 
@@ -52,16 +60,29 @@ class CreateUserService {
       email,
       password: encryptedPassword,
       isProvider,
+      birth_date,
+      mail_confirmed,
     });
 
-    const { token } = await this.userTokensRepository.generate(user.id);
-    await this.queueApiProvider.sendToQueue({
-      name: user.name,
-      email: user.email,
-      token,
-    });
+    if (!mail_confirmed) {
+      const { token } = await this.userTokensRepository.generate(user.id);
+      await this.queueApiProvider.sendToQueue({
+        name: user.name,
+        email: user.email,
+        token,
+      });
+    }
 
     if (user.isProvider) {
+      const providerStatistic = await this.statisticsRepository.create({
+        reviews: 0,
+        favorites: 0,
+        bio: '',
+        average_review: 0,
+      });
+
+      user.statistics = providerStatistic;
+      await this.userRepository.save(user);
       await this.cacheProvider.invalidatePrefix('providers-list');
     }
 

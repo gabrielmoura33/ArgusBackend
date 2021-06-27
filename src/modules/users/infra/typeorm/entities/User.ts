@@ -41,22 +41,8 @@ class User {
   @Exclude()
   birth_date: Date;
 
-  @Column({
-    nullable: true,
-    default: false,
-  })
-  @Exclude()
-  isFacebookUser: boolean;
-
   @Column({ default: false })
   isProvider: boolean;
-
-  @Exclude()
-  @Column({
-    nullable: true,
-    default: false,
-  })
-  isGoogleUser: boolean;
 
   @Exclude()
   @Column({
@@ -87,7 +73,8 @@ class User {
   })
   appointmentsUser: Appointment[];
 
-  @OneToOne(() => Statistic)
+  @OneToOne(() => Statistic, { eager: true })
+  @JoinColumn({ name: 'statistics_id' })
   statistics: Statistic;
 
   @ManyToOne(() => Profile, { cascade: true, eager: true })
