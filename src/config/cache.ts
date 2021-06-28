@@ -10,10 +10,8 @@ export default {
   driver: 'redis',
   config: {
     redis: {
-      username: 'default',
       host: process.env.REDIS_HOST || undefined,
       port: process.env.REDIS_PORT,
-      // password: process.env.REDIS_PASS,
     },
   },
 } as ICacheConfig;
