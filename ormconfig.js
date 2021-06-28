@@ -6,15 +6,15 @@ module.exports = [
     type: 'postgres',
     logging: false,
     entities: [
-      './src/modules/**/infra/typeorm/entities/*.ts'
+      './dist/modules/**/infra/typeorm/entities/*.ts'
     ],
     migrations: [
-      'src/shared/infra/typeorm/migrations/*.ts'
+      'dist/shared/infra/typeorm/migrations/*.ts'
     ],
     cli: {
-      migrationsDir: 'src/shared/infra/typeorm/migrations'
+      migrationsDir: 'dist/shared/infra/typeorm/migrations'
     },
-    seeds: ["src/shared/infra/typeorm/seeds/*{.ts,.js}"]
+    seeds: ["dist/shared/infra/typeorm/seeds/*{.ts,.js}"]
   },
     {
     name: 'mongo',
@@ -23,7 +23,7 @@ module.exports = [
     port: 27017,
     database: process.env.MONGODB_DATABASE,
     entities: [
-      './src/modules/**/infra/typeorm/schemas/*.ts'
+      './dist/modules/**/infra/typeorm/schemas/*.ts'
     ],
     useUnifiedTopology: true
   }
