@@ -11,8 +11,8 @@ import UsersRepository from '../../typeorm/repositories/UsersRepository';
 export default class SocialAuthController {
   async create(request: Request, response: Response): Promise<Response> {
     const usersRepository = new UsersRepository();
-    const { social_auth_token } = request.headers;
-    console.log(request.headers);
+    const { social_auth_token } = request.query;
+
     if (!social_auth_token) throw new AppError('Unauthorized', 401);
     if (social_auth_token !== process.env.SOCIAL_LOGIN_SECRET)
       throw new AppError('Error: Invalid Secret', 401);
