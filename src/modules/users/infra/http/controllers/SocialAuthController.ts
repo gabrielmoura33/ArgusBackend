@@ -12,7 +12,7 @@ export default class SocialAuthController {
   async create(request: Request, response: Response): Promise<Response> {
     const usersRepository = new UsersRepository();
     const { social_auth_token } = request.headers;
-
+    console.log(social_auth_token);
     if (!social_auth_token) throw new AppError('Unauthorized', 401);
     if (social_auth_token !== process.env.SOCIAL_LOGIN_SECRET)
       throw new AppError('Error: Invalid Secret', 401);
