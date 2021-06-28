@@ -3,8 +3,6 @@ import mailConfig from '@config/mail';
 import IStorageProvider from './StorageProviders/models/IStorageProvider';
 import DiskStorageProvider from './StorageProviders/implementations/DiskStorageProvider';
 
-import './CacheProvider';
-
 import IMailProvider from './MailProvider/models/IMailProvider';
 import EtherealMailProvider from './MailProvider/implementations/EtherealMailProvider';
 import SESMailProvider from './MailProvider/implementations/SESMailProvider';

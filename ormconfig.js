@@ -6,15 +6,15 @@ module.exports = [
     type: 'postgres',
     logging: false,
     entities: [
-      './dist/modules/**/infra/typeorm/entities/*.ts'
+      './src/modules/**/infra/typeorm/entities/*.ts'
     ],
     migrations: [
-      'dist/shared/infra/typeorm/migrations/*.ts'
+      'src/shared/infra/typeorm/migrations/*.ts'
     ],
     cli: {
-      migrationsDir: 'dist/shared/infra/typeorm/migrations'
+      migrationsDir: 'src/shared/infra/typeorm/migrations'
     },
-    seeds: ["dist/shared/infra/typeorm/seeds/*{.ts,.js}"]
+    seeds: ["src/shared/infra/typeorm/seeds/*{.ts,.js}"]
   },
     {
     name: 'mongo',

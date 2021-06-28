@@ -1,7 +1,7 @@
 import User from '@modules/users/infra/typeorm/entities/User';
 import AppError from '@shared/errors/AppError';
 import { injectable, inject } from 'tsyringe';
-import { ICacheProvider } from '@shared/container/providers/CacheProvider/models/ICacheProdiver';
+
 import { IQueueApiProvider } from '@shared/container/providers/QueueProvider/model/IQueueApiProvider';
 
 import IUsersRepository from '../repositories/IUsersRepository';
@@ -25,9 +25,6 @@ class CreateUserService {
 
     @inject('HashProvider')
     private hashProvider: IHashProvider,
-
-    @inject('CacheProvider')
-    private cacheProvider: ICacheProvider,
 
     @inject('UserTokensRepository')
     private userTokensRepository: IUserTokensRepository,
@@ -83,7 +80,6 @@ class CreateUserService {
 
       user.statistics = providerStatistic;
       await this.userRepository.save(user);
-      await this.cacheProvider.invalidatePrefix('providers-list');
     }
 
     return user;

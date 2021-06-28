@@ -1,12 +1,16 @@
 import Redis, { Redis as RedisClient } from 'ioredis';
-import cacheConfig from '@config/cache';
+
 import { ICacheProvider } from '../models/ICacheProdiver';
 
 export default class RedisCacheProvider implements ICacheProvider {
   private client: RedisClient;
 
   constructor() {
-    this.client = new Redis(cacheConfig.config.redis);
+    this.client = new Redis('redis://:@68.183.135.71:6379/');
+  }
+
+  invalidate(key: string): Promise<void> {
+    throw new Error(key);
   }
 
   public async save(key: string, value: any): Promise<void> {
@@ -22,10 +26,6 @@ export default class RedisCacheProvider implements ICacheProvider {
 
     const parsedData = JSON.parse(data) as T;
     return parsedData;
-  }
-
-  invalidate(key: string): Promise<void> {
-    //
   }
 
   async invalidatePrefix(prefix: string): Promise<void> {
