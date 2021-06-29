@@ -46,6 +46,7 @@ class CreateUserService {
   }: IRequest): Promise<User> {
     const userExist = await this.userRepository.findByEmail(email);
 
+    console.log(userExist);
     if (userExist) {
       throw new AppError('User already exists');
     }
