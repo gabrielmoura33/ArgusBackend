@@ -8,7 +8,8 @@ import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 
 interface IRequest {
   email: string;
-  password: string;
+  password?: string;
+  isSocialAuthentication?: boolean;
 }
 interface IResponse {
   user: User;
@@ -23,10 +24,31 @@ class AuthenticateUserService {
     private hashProvider: IHashProvider,
   ) {}
 
-  public async execute({ email, password }: IRequest): Promise<IResponse> {
+  public async execute({
+    email,
+    password,
+    isSocialAuthentication,
+  }: IRequest): Promise<IResponse> {
     const user = await this.userRepository.findByEmail(email);
 
-    if (!user || !password) {
+    if (!user) {
+      throw new AppError('email/password combination does not match', 401);
+    }
+
+    if (isSocialAuthentication) {
+      const { secret } = authConfig.jwt;
+
+      const token = sign({}, secret as Secret, {
+        subject: user.id,
+        expiresIn: '1d',
+      });
+      return {
+        user,
+        token,
+      };
+    }
+
+    if (!password) {
       throw new AppError('email/password combination does not match', 401);
     }
 

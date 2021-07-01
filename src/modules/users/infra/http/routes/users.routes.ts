@@ -21,7 +21,7 @@ usersRouter.post(
       name: Joi.string().required(),
       email: Joi.string().email().required(),
       password: Joi.string().required(),
-      isProvider: Joi.boolean(),
+      isProvider: Joi.boolean().optional(),
       birth_date: Joi.date(),
       address: Joi.object().optional(),
     },
