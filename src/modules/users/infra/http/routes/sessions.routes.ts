@@ -2,6 +2,8 @@ import { Router } from 'express';
 import { celebrate, Segments, Joi } from 'celebrate';
 import SessionsController from '../controllers/SessionsController';
 import SocialAuthController from '../controllers/SocialAuthController';
+import fetchGoogleInfo from '../middlewares/fetchGoogleInfo';
+import fetchFacebookInfo from '../middlewares/fetchFacebookInfo';
 
 const sessionsRouter = Router();
 const sessionController = new SessionsController();
@@ -20,16 +22,13 @@ sessionsRouter.post(
 
 sessionsRouter.post(
   '/social-auth/google',
-  celebrate({
-    [Segments.BODY]: {
-      name: Joi.string().required(),
-      email: Joi.string().email().required(),
-      password: Joi.string().required(),
-      isProvider: Joi.boolean(),
-      birth_date: Joi.date(),
-      avatar_url: Joi.string().optional(),
-    },
-  }),
+  fetchGoogleInfo,
+  socialAuthController.create,
+);
+
+sessionsRouter.post(
+  '/social-auth/facebook',
+  fetchFacebookInfo,
   socialAuthController.create,
 );
 

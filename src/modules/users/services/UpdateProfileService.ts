@@ -1,5 +1,3 @@
-// import User from '@modules/users/infra/typeorm/entities/User';
-// import AppError from '@shared/errors/AppError';
 import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
@@ -75,13 +73,9 @@ class UpdateProfileService {
       } as Address;
     }
 
-    if (password && !old_password) {
-      throw new AppError('Old password is not defined');
-    }
-
-    if (password && old_password) {
+    if (password) {
       const checkOldPassword = await this.hashProvider.compareHash(
-        old_password,
+        old_password || '',
         user.password,
       );
 
