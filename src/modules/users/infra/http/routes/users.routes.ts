@@ -22,6 +22,7 @@ usersRouter.post(
       email: Joi.string().email().required(),
       password: Joi.string().required(),
       isProvider: Joi.boolean().optional(),
+      isArgusArtist: Joi.boolean().optional(),
       birth_date: Joi.date(),
       address: Joi.object().optional(),
     },

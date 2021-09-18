@@ -44,6 +44,9 @@ class User {
   @Column({ default: false })
   isProvider: boolean;
 
+  @Column({ default: false })
+  isArgusArtist: boolean;
+
   @Exclude()
   @Column({
     nullable: true,
@@ -73,7 +76,7 @@ class User {
   })
   appointmentsUser: Appointment[];
 
-  @OneToOne(() => Statistic, { eager: true })
+  @OneToOne(() => Statistic, { eager: true, cascade: true })
   @JoinColumn({ name: 'statistics_id' })
   statistics: Statistic;
 

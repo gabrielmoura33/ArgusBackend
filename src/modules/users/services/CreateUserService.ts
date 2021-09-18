@@ -16,6 +16,7 @@ interface IRequest {
   isProvider: boolean;
   birth_date: Date;
   mail_confirmed?: boolean;
+  isArgusArtist?: boolean;
 }
 @injectable()
 class CreateUserService {
@@ -41,12 +42,12 @@ class CreateUserService {
     email,
     password,
     isProvider,
+    isArgusArtist,
     birth_date,
     mail_confirmed = false,
   }: IRequest): Promise<User> {
     const userExist = await this.userRepository.findByEmail(email);
 
-    console.log(userExist);
     if (userExist) {
       throw new AppError('User already exists');
     }
@@ -60,6 +61,7 @@ class CreateUserService {
       isProvider,
       birth_date,
       mail_confirmed,
+      isArgusArtist,
     });
 
     if (!mail_confirmed) {
@@ -80,6 +82,7 @@ class CreateUserService {
       });
 
       user.statistics = providerStatistic;
+
       await this.userRepository.save(user);
     }
 

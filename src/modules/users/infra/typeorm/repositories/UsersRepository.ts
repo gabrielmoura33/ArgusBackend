@@ -36,6 +36,29 @@ class UsersRepository implements IUsersRepository {
     return users;
   }
 
+  public async findAllArgusProviders({
+    except_user_id,
+    filters,
+  }: IFindAllProviersDTO): Promise<User[]> {
+    let users: User[];
+
+    if (except_user_id) {
+      users = await this.ormRepository.find({
+        where: {
+          id: Not(except_user_id),
+          isProvider: true,
+          mail_confirmed: true,
+          isArgusArtist: true,
+        },
+        ...filters,
+      });
+    } else {
+      users = await this.ormRepository.find();
+    }
+
+    return users;
+  }
+
   public async findByEmail(email: string): Promise<User | undefined> {
     const user = await this.ormRepository.findOne({
       where: { email },

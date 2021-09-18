@@ -4,7 +4,7 @@ import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import { classToClass } from 'class-transformer';
 import { IFilters } from '@shared/infra/interfaces/IFilters';
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
-import { FindManyOptions, Like } from 'typeorm';
+import { FindManyOptions } from 'typeorm';
 
 interface IRequest {
   user_id: string;
@@ -16,7 +16,7 @@ interface IRequest {
   };
 }
 @injectable()
-class ListProvidersService {
+class ListArgusProvidersService {
   constructor(
     @inject('UsersRepository')
     private userRepository: IUsersRepository,
@@ -28,7 +28,7 @@ class ListProvidersService {
     coordinates,
   }: IRequest): Promise<User[]> {
     const query: FindManyOptions<User> = {};
-    const { _limit, _sort, _order, _page, _search } = filters;
+    const { _limit, _sort, _order, _page } = filters;
 
     if (_limit) {
       query.take = _limit;
@@ -46,13 +46,6 @@ class ListProvidersService {
       query.order = {
         name: 'ASC',
       };
-    }
-
-    if (_search) {
-      query.where = [
-        { name: Like(`%${_search}%`) },
-        { email: Like(`%${_search}%`) },
-      ];
     }
 
     if (coordinates.latitude) {
@@ -74,4 +67,4 @@ class ListProvidersService {
   }
 }
 
-export default ListProvidersService;
+export default ListArgusProvidersService;

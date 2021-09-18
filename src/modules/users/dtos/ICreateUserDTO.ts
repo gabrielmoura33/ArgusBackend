@@ -5,4 +5,5 @@ export default interface ICreateUserDTO {
   isProvider: boolean;
   birth_date: Date;
   mail_confirmed?: boolean;
+  isArgusArtist?: boolean;
 }

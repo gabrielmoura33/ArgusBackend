@@ -9,6 +9,10 @@ export default interface IUsersRepository {
     data: IFindAllProviersDTO,
     query?: FindManyOptions<User>,
   ): Promise<User[]>;
+  findAllArgusProviders(
+    data: IFindAllProviersDTO,
+    query?: FindManyOptions<User>,
+  ): Promise<User[]>;
   countProviders(query?: FindManyOptions<User>): Promise<number>;
   findById(id: string): Promise<User | undefined>;
   findByEmail(email: string): Promise<User | undefined>;
