@@ -47,7 +47,6 @@ class User {
   @Column({ default: false })
   isArgusArtist: boolean;
 
-  @Exclude()
   @Column({
     nullable: true,
   })

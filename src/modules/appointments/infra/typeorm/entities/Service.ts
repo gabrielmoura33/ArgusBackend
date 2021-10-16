@@ -12,6 +12,7 @@ import {
 import User from '../../../../users/infra/typeorm/entities/User';
 import Appointment from './Appointment';
 import Category from './category';
+import ServiceAddon from './ServiceAddons';
 
 @Entity('services')
 class Service {
@@ -46,6 +47,12 @@ class Service {
   @ManyToOne(() => Category)
   @JoinColumn({ name: 'category_id' })
   category: Category;
+
+  @OneToMany(() => ServiceAddon, serviceAddon => serviceAddon.service, {
+    cascade: true,
+    eager: true,
+  })
+  serviceAddons: ServiceAddon[];
 }
 
 export default Service;
