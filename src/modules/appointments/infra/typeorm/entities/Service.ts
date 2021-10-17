@@ -23,12 +23,15 @@ class Service {
   provider_id: string;
 
   @Column()
+  category_id: string;
+
+  @Column()
   name: string;
 
   @Column({ nullable: true })
   description: string;
 
-  @Column()
+  @Column({ type: 'float' })
   price: number;
 
   @CreateDateColumn()
@@ -49,8 +52,8 @@ class Service {
   category: Category;
 
   @OneToMany(() => ServiceAddon, serviceAddon => serviceAddon.service, {
-    cascade: true,
     eager: true,
+    cascade: true,
   })
   serviceAddons: ServiceAddon[];
 }

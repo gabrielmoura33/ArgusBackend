@@ -16,6 +16,8 @@ import INotificationsRepository from '@modules/notifications/repositories/INotif
 import NotificationsRepository from '@modules/notifications/infra/typeorm/repositories/NotificationsRepository';
 import IStatisticsRepository from '@modules/users/repositories/IStatisticsRepository';
 import StatisticsRepository from '@modules/users/infra/typeorm/repositories/StatisticsRepository';
+import IServicesRepository from '@modules/appointments/repositories/IServicesRepository';
+import ServicesRepository from '@modules/appointments/infra/typeorm/repositories/ServicesRepository';
 
 container.registerSingleton<IAppointmentsRepository>(
   'AppointmentsRepository',
@@ -40,4 +42,9 @@ container.registerSingleton<INotificationsRepository>(
 container.registerSingleton<IStatisticsRepository>(
   'StatisticsRepository',
   StatisticsRepository,
+);
+
+container.registerSingleton<IServicesRepository>(
+  'ServicesRepository',
+  ServicesRepository,
 );

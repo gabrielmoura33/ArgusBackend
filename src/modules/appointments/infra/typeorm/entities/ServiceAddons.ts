@@ -15,21 +15,18 @@ class ServiceAddon {
   id: string;
 
   @Column()
-  provider_id: string;
-
-  @Column()
   name: string;
 
   @Column({ nullable: true })
   description: string;
 
-  @Column()
+  @Column({ type: 'float' })
   price: number;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'float' })
   min_value: number;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, type: 'float' })
   max_value: number;
 
   @Column({ default: false })

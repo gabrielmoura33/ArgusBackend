@@ -19,6 +19,9 @@ class Category {
   @Column({ nullable: true })
   description: string;
 
+  @Column({ nullable: true })
+  image_url: string;
+
   @CreateDateColumn()
   created_at: Date;
 
