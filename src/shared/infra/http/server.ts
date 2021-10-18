@@ -16,8 +16,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
+
 app.use('/files', express.static(uploadConfig.uploadsFolder));
-app.use(routes);
+app.use('/api/v1', routes);
 
 app.use(errors());
 

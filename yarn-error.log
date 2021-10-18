@@ -1,5 +1,5 @@
 Arguments: 
-  /Users/imac/.nvm/versions/node/v14.16.0/bin/node /Users/imac/.nvm/versions/node/v14.16.0/bin/yarn typeorm migration:generate --name AlterServiceAddAddons
+  /Users/imac/.nvm/versions/node/v14.16.0/bin/node /Users/imac/.nvm/versions/node/v14.16.0/bin/yarn dev
 
 PATH: 
   /Users/imac/Documents/google-cloud-sdk/bin:/Users/imac/.nvm/versions/node/v14.16.0/bin:/Users/imac/.serverless/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Users/imac/Documents/google-cloud-sdk/bin:/Users/imac/.zinit/polaris/bin:/Users/imac/.nvm/versions/node/v14.16.0/bin:/Users/imac/.serverless/bin:/Users/imac/Android/Sdk/emulator:/Users/imac/Android/Sdk/tools:/Users/imac/Android/Sdk/tools/bin:/Users/imac/Android/Sdk/platform-tools:/Users/imac/Android/Sdk/emulator:/Users/imac/Android/Sdk/tools:/Users/imac/Android/Sdk/tools/bin:/Users/imac/Android/Sdk/platform-tools

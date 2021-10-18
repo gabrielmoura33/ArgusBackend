@@ -33,6 +33,12 @@ class ServiceAddon {
   default: boolean;
 
   @Column({ default: false })
+  active: boolean;
+
+  @Column()
+  type: 'PUBLIC' | 'DURATION' | 'EQUIPMENT' | 'AMBIENT';
+
+  @Column({ default: false })
   selectable: boolean;
 
   @CreateDateColumn()

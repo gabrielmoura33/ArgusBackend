@@ -44,16 +44,18 @@ class Service {
   @JoinColumn({ name: 'provider_id' })
   provider: User;
 
-  @OneToMany(() => Appointment, appointment => appointment.services)
+  @OneToMany(() => Appointment, appointment => appointment.service)
   appointments: Appointment[];
 
-  @ManyToOne(() => Category)
+  @ManyToOne(() => Category, { eager: true })
   @JoinColumn({ name: 'category_id' })
   category: Category;
 
   @OneToMany(() => ServiceAddon, serviceAddon => serviceAddon.service, {
     eager: true,
     cascade: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   })
   serviceAddons: ServiceAddon[];
 }

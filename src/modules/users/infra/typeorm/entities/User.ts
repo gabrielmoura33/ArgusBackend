@@ -62,7 +62,10 @@ class User {
   @JoinColumn({ name: 'address_id' })
   address: Address;
 
-  @OneToMany(() => Service, service => service.provider, { nullable: true })
+  @OneToMany(() => Service, service => service.provider, {
+    nullable: true,
+    eager: true,
+  })
   services: Service[];
 
   @OneToMany(() => Appointment, appointment => appointment.provider_id, {

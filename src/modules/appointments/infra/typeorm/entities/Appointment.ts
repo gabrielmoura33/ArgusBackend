@@ -10,6 +10,7 @@ import {
 
 import User from '../../../../users/infra/typeorm/entities/User';
 import Service from './Service';
+import Status from './Status';
 
 @Entity('appointments')
 class Appointment {
@@ -30,13 +31,27 @@ class Appointment {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
+  @Column()
+  service_id: string;
+
   @ManyToOne(() => Service, {
     eager: true,
   })
-  services: Service;
+  @JoinColumn({ name: 'service_id' })
+  service: Service;
 
-  @Column('time with time zone')
+  @ManyToOne(() => Status, { eager: true })
+  @JoinColumn({ name: 'status_id' })
+  status: Status;
+
+  @Column('timestamp with time zone')
   date: Date;
+
+  @Column()
+  scheduled_time: number;
+
+  @Column({ type: 'float' })
+  final_price: number;
 
   @CreateDateColumn()
   created_at: Date;

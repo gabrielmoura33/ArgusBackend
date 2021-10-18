@@ -70,11 +70,20 @@ class AppointmentsRepository implements IAppointmentsRepository {
     date,
     provider_id,
     user_id,
+    final_price,
+    scheduled_time,
+    service_id,
   }: ICreateAppointmentsDTO): Promise<Appointment> {
     const appointment = this.ormRepository.create({
       provider_id,
       date,
       user_id,
+      final_price,
+      scheduled_time,
+      service_id,
+      status: {
+        status: 'WAITING FOR CONFIRMATION',
+      },
     });
 
     await this.ormRepository.save(appointment);

@@ -4,11 +4,15 @@ import { injectable, inject } from 'tsyringe';
 import INotificationsRepository from '@modules/notifications/repositories/INotificationsRepository';
 import Appointment from '../infra/typeorm/entities/Appointment';
 import IAppointmentsRepostory from '../repositories/IAppointmentsRepository';
+import IServicesRepository from '../repositories/IServicesRepository';
 
 interface IRequest {
   provider_id: string;
   user_id: string;
   date: Date;
+  final_price: number;
+  scheduled_time: number;
+  service_id: string;
 }
 
 @injectable()
@@ -19,17 +23,35 @@ class CreateAppointmentService {
 
     @inject('NotificationsRepository')
     private notificationsRepository: INotificationsRepository,
+
+    @inject('ServicesRepository')
+    private serviceRepository: IServicesRepository,
   ) {}
 
   public async execute({
     provider_id,
     date,
     user_id,
+    final_price,
+    scheduled_time,
+    service_id,
   }: IRequest): Promise<Appointment> {
     const appointmentDate = startOfHour(date);
+
     if (isBefore(appointmentDate, Date.now())) {
       throw new AppError("You Can't create an appointment on a past date");
     }
+
+    const verifyProviderService = await this.serviceRepository.findAllServices({
+      where: { provider_id, id: service_id },
+    });
+
+    if (!verifyProviderService) {
+      throw new AppError(
+        "You can't create an appointment to a provider that not owns it",
+      );
+    }
+
     const findAppointmentsInSameDate = await this.appointmentsRepository.findByDate(
       appointmentDate,
     );
@@ -46,6 +68,9 @@ class CreateAppointmentService {
       user_id,
       provider_id,
       date: appointmentDate,
+      final_price,
+      scheduled_time,
+      service_id,
     });
     const dateFormatted = format(appointmentDate, "dd/MM/yyyy 'às' HH:mm");
 
