@@ -4,16 +4,16 @@ import { classToClass } from 'class-transformer';
 
 import IStatisticsRepository from '@modules/users/repositories/IStatisticsRepository';
 import { ICreateStatisticsDTO } from '@modules/users/dtos/ICreateStatisticsDTO';
-import Statistic from '../entities/Statistic';
+import ProviderInfo from '../entities/ProviderInfo';
 
 class StatisticsRepository implements IStatisticsRepository {
-  private ormRepository: Repository<Statistic>;
+  private ormRepository: Repository<ProviderInfo>;
 
   constructor() {
-    this.ormRepository = getRepository(Statistic);
+    this.ormRepository = getRepository(ProviderInfo);
   }
 
-  public async create(data: ICreateStatisticsDTO): Promise<Statistic> {
+  public async create(data: ICreateStatisticsDTO): Promise<ProviderInfo> {
     const providerStatistic = this.ormRepository.create(data);
 
     await this.ormRepository.save(data);
@@ -21,7 +21,7 @@ class StatisticsRepository implements IStatisticsRepository {
     return classToClass(providerStatistic);
   }
 
-  public async save(userStatistic: Statistic): Promise<Statistic> {
+  public async save(userStatistic: ProviderInfo): Promise<ProviderInfo> {
     return this.ormRepository.save(userStatistic);
   }
 }

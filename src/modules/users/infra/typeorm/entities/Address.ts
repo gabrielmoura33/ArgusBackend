@@ -9,6 +9,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Point } from 'geojson';
+import Provider from '@modules/appointments/infra/typeorm/entities/Provider';
 import User from './User';
 
 @Entity('addresses')
@@ -46,11 +47,20 @@ class Address {
   })
   location: Point;
 
-  // CONSTRAINTS
+  @Column({ nullable: true })
+  user_id: string;
 
+  @Column({ nullable: true })
+  provider_id: string;
+
+  // CONSTRAINTS
   @OneToOne(() => User)
   @JoinColumn({ name: 'user_id' })
   user: User;
+
+  @OneToOne(() => Provider)
+  @JoinColumn({ name: 'provider_id' })
+  provider: Provider;
 
   @CreateDateColumn()
   created_at: Date;

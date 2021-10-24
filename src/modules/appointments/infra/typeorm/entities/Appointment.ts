@@ -40,18 +40,27 @@ class Appointment {
   @JoinColumn({ name: 'service_id' })
   service: Service;
 
-  @ManyToOne(() => Status, { eager: true })
+  @ManyToOne(() => Status, { eager: true, cascade: true })
   @JoinColumn({ name: 'status_id' })
   status: Status;
 
   @Column('timestamp with time zone')
   date: Date;
 
-  @Column()
+  @Column({ default: 60 })
   scheduled_time: number;
 
   @Column({ type: 'float' })
   final_price: number;
+
+  @Column({ default: 0 })
+  audience: number;
+
+  @Column({ default: false })
+  open_environment: boolean;
+
+  @Column({ default: false })
+  rented_equipment: boolean;
 
   @CreateDateColumn()
   created_at: Date;

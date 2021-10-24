@@ -6,8 +6,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('statistics')
-class Statistic {
+@Entity('provider_info')
+class PrviderInfo {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -23,10 +23,19 @@ class Statistic {
   @Column({ type: 'text', nullable: true })
   bio: string;
 
+  @Column()
+  work_schedule: string;
+
+  @Column()
+  week_schedule: string;
+
+  @Column({ nullable: true })
+  video_url: string;
+
   @CreateDateColumn()
   created_at: Date;
 
   @UpdateDateColumn()
   updated_at: Date;
 }
-export default Statistic;
+export default PrviderInfo;

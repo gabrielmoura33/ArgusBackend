@@ -23,7 +23,6 @@ export default async function fetchFacebookInfo(
       email: data.email,
       picture: data.picture.data.url,
       birth_date: req.body.birth_date,
-      isProvider: req.body.isProvider,
     };
 
     return next();

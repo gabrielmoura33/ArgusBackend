@@ -13,6 +13,11 @@ interface IRequest {
   final_price: number;
   scheduled_time: number;
   service_id: string;
+  audience: number;
+
+  open_environment: boolean;
+
+  rented_equipment: boolean;
 }
 
 @injectable()
@@ -35,6 +40,9 @@ class CreateAppointmentService {
     final_price,
     scheduled_time,
     service_id,
+    audience,
+    open_environment,
+    rented_equipment,
   }: IRequest): Promise<Appointment> {
     const appointmentDate = startOfHour(date);
 
@@ -71,6 +79,9 @@ class CreateAppointmentService {
       final_price,
       scheduled_time,
       service_id,
+      audience,
+      open_environment,
+      rented_equipment,
     });
     const dateFormatted = format(appointmentDate, "dd/MM/yyyy 'às' HH:mm");
 

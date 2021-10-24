@@ -9,8 +9,8 @@ import {
   OneToMany,
 } from 'typeorm';
 
-import User from '../../../../users/infra/typeorm/entities/User';
 import Appointment from './Appointment';
+import Provider from './Provider';
 import Category from './category';
 import ServiceAddon from './ServiceAddons';
 
@@ -40,9 +40,9 @@ class Service {
   @UpdateDateColumn()
   updated_at: Date;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => Provider)
   @JoinColumn({ name: 'provider_id' })
-  provider: User;
+  provider: Provider;
 
   @OneToMany(() => Appointment, appointment => appointment.service)
   appointments: Appointment[];

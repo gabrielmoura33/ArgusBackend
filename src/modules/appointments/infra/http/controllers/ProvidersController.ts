@@ -1,10 +1,11 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
-import { classToClass } from 'class-transformer';
+import { classToClass, classToPlain } from 'class-transformer';
 import ListProvidersService from '@modules/appointments/services/ListProviders';
 import { IFilters } from '@shared/infra/interfaces/IFilters';
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
 import GetProviderService from '@modules/appointments/services/GetProviderService';
+import CreateProviderService from '@modules/appointments/services/CreateProviderService';
 
 export default class ProvidersController {
   public async index(request: Request, response: Response): Promise<Response> {
@@ -56,5 +57,28 @@ export default class ProvidersController {
       rows: classToClass(provider),
       count: 1,
     });
+  }
+
+  public async create(request: Request, response: Response): Promise<Response> {
+    const { name, email, password, birth_date, provider_info } = request.body;
+
+    let filename;
+    if (request.file) filename = request.file.filename;
+
+    const createProviderService = container.resolve(CreateProviderService);
+
+    const provider = await createProviderService.execute({
+      name,
+      email,
+      password,
+      birth_date,
+      provider_info: {
+        ...provider_info,
+        video_url: `${process.env.FILES_URL}/${filename}` || undefined,
+      },
+    });
+
+    // delete provider.password;
+    return response.json(classToPlain(provider));
   }
 }

@@ -10,6 +10,9 @@ export default class AppointmentController {
       scheduled_time,
       final_price,
       service_id,
+      audience,
+      open_environment,
+      rented_equipment,
     } = request.body;
     const user_id = request.user.id;
     const parsedDate = date;
@@ -23,6 +26,9 @@ export default class AppointmentController {
       scheduled_time: Number(scheduled_time),
       final_price: Number(final_price),
       service_id,
+      audience,
+      open_environment,
+      rented_equipment,
     });
     return response.json(appointment);
   }

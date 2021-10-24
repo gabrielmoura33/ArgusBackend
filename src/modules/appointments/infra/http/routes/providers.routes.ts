@@ -11,13 +11,16 @@ import ProviderServiceController from '../controllers/ProviderServiceController'
 
 const providersRouter = Router();
 
-providersRouter.use(ensureAuthenticated);
 const providersController = new ProvidersController();
 const monthAvailabilityController = new ProviderMonthAvailabilityController();
 const dayAvailabilityController = new ProviderDayAvailabilityController();
 const argusProvidersController = new ArgusProvidersController();
 const providerServiceController = new ProviderServiceController();
 
+// Non Authenticated Route
+providersRouter.post('/', providersController.create);
+
+providersRouter.use(ensureAuthenticated);
 providersRouter.get('/', providersController.index);
 providersRouter.get('/argus_users', argusProvidersController.index);
 

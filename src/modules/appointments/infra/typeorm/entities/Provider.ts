@@ -7,18 +7,16 @@ import {
   OneToOne,
   JoinColumn,
   OneToMany,
-  ManyToOne,
 } from 'typeorm';
 
 import { Exclude, Expose } from 'class-transformer';
-import Service from '../../../../appointments/infra/typeorm/entities/Service';
-import Appointment from '../../../../appointments/infra/typeorm/entities/Appointment';
-import Address from './Address';
+import Address from '@modules/users/infra/typeorm/entities/Address';
+import ProviderInfo from '@modules/users/infra/typeorm/entities/ProviderInfo';
+import Service from './Service';
+import Appointment from './Appointment';
 
-import Profile from './Profile';
-
-@Entity('users')
-class User {
+@Entity('providers')
+class Provider {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -40,9 +38,6 @@ class User {
   })
   @Exclude()
   birth_date: Date;
-
-  @Column({ default: false })
-  isProvider: boolean;
 
   @Column({ default: false })
   isArgusArtist: boolean;
@@ -71,16 +66,11 @@ class User {
   @OneToMany(() => Appointment, appointment => appointment.provider_id, {
     nullable: true,
   })
-  appointmentsProvider: Appointment[];
+  appointments: Appointment[];
 
-  @OneToMany(() => Appointment, appointment => appointment.user_id, {
-    nullable: true,
-  })
-  appointmentsUser: Appointment[];
-
-  @ManyToOne(() => Profile, { cascade: true, eager: true })
-  @JoinColumn({ name: 'profile_id' })
-  profile: Profile;
+  @OneToOne(() => ProviderInfo, { eager: true, cascade: true })
+  @JoinColumn({ name: 'provider_info_id' })
+  providerInfo: ProviderInfo;
 
   @Expose({ name: 'avatar_url' })
   get avatarUrl(): string | null {
@@ -89,4 +79,4 @@ class User {
       : null;
   }
 }
-export default User;
+export default Provider;

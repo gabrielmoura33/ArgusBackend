@@ -13,10 +13,8 @@ interface IRequest {
   name: string;
   email: string;
   password: string;
-  isProvider: boolean;
   birth_date: Date;
   mail_confirmed?: boolean;
-  isArgusArtist?: boolean;
 }
 @injectable()
 class CreateUserService {
@@ -41,10 +39,7 @@ class CreateUserService {
     name,
     email,
     password,
-    isProvider,
-    isArgusArtist,
     birth_date,
-    mail_confirmed = false,
   }: IRequest): Promise<User> {
     const userExist = await this.userRepository.findByEmail(email);
 
@@ -58,33 +53,29 @@ class CreateUserService {
       name,
       email,
       password: encryptedPassword,
-      isProvider,
       birth_date,
-      mail_confirmed,
-      isArgusArtist,
+      mail_confirmed: false,
     });
 
-    if (!mail_confirmed) {
-      const { token } = await this.userTokensRepository.generate(user.id);
-      await this.queueApiProvider.sendToQueue({
-        name: user.name,
-        email: user.email,
-        token,
-      });
-    }
+    const { token } = await this.userTokensRepository.generate(user.id);
+    await this.queueApiProvider.sendToQueue({
+      name: user.name,
+      email: user.email,
+      token,
+    });
 
-    if (user.isProvider) {
-      const providerStatistic = await this.statisticsRepository.create({
-        reviews: 0,
-        favorites: 0,
-        bio: '',
-        average_review: 0,
-      });
+    // if (user.isProvider) {
+    //   const providerStatistic = await this.statisticsRepository.create({
+    //     reviews: 0,
+    //     favorites: 0,
+    //     bio: '',
+    //     average_review: 0,
+    //   });
 
-      user.statistics = providerStatistic;
+    //   user.statistics = providerStatistic;
 
-      await this.userRepository.save(user);
-    }
+    //   await this.userRepository.save(user);
+    // }
 
     return user;
   }

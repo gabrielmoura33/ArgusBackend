@@ -23,7 +23,6 @@ export default async function fetchGoogleInfo(
     req.body = {
       ...response.data,
       birth_date: req.body.birth_date,
-      isProvider: req.body.isProvider,
     };
 
     return next();

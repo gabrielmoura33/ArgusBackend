@@ -14,9 +14,6 @@ class Status {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
-  appointment_id: string;
-
   @OneToMany(() => Appointment, appointment => appointment.status)
   appointments: Appointment[];
 

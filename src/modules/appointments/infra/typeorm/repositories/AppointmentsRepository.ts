@@ -73,6 +73,9 @@ class AppointmentsRepository implements IAppointmentsRepository {
     final_price,
     scheduled_time,
     service_id,
+    audience,
+    open_environment,
+    rented_equipment,
   }: ICreateAppointmentsDTO): Promise<Appointment> {
     const appointment = this.ormRepository.create({
       provider_id,
@@ -81,6 +84,9 @@ class AppointmentsRepository implements IAppointmentsRepository {
       final_price,
       scheduled_time,
       service_id,
+      audience,
+      open_environment,
+      rented_equipment,
       status: {
         status: 'WAITING FOR CONFIRMATION',
       },

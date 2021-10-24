@@ -18,6 +18,8 @@ import IStatisticsRepository from '@modules/users/repositories/IStatisticsReposi
 import StatisticsRepository from '@modules/users/infra/typeorm/repositories/StatisticsRepository';
 import IServicesRepository from '@modules/appointments/repositories/IServicesRepository';
 import ServicesRepository from '@modules/appointments/infra/typeorm/repositories/ServicesRepository';
+import IProvidersRepository from '@modules/appointments/repositories/IProvidersRepository';
+import ProvidersRepository from '@modules/appointments/infra/typeorm/repositories/ProvidersRepository';
 
 container.registerSingleton<IAppointmentsRepository>(
   'AppointmentsRepository',
@@ -27,6 +29,11 @@ container.registerSingleton<IAppointmentsRepository>(
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
   UsersRepository,
+);
+
+container.registerSingleton<IProvidersRepository>(
+  'ProvidersRepository',
+  ProvidersRepository,
 );
 
 container.registerSingleton<IUserTokensRepository>(
