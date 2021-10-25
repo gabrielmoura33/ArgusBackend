@@ -11,6 +11,7 @@ import {
 import User from '../../../../users/infra/typeorm/entities/User';
 import Service from './Service';
 import Status from './Status';
+import Provider from './Provider';
 
 @Entity('appointments')
 class Appointment {
@@ -20,12 +21,15 @@ class Appointment {
   @Column()
   provider_id: string;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => Provider)
   @JoinColumn({ name: 'provider_id' })
-  provider: User[];
+  provider: Provider[];
 
   @Column()
   user_id: string;
+
+  @Column()
+  status_id: string;
 
   @ManyToOne(() => User)
   @JoinColumn({ name: 'user_id' })

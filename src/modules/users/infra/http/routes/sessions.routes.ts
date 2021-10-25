@@ -32,4 +32,26 @@ sessionsRouter.post(
   socialAuthController.create,
 );
 
+sessionsRouter.post(
+  '/provider/',
+  celebrate({
+    [Segments.BODY]: {
+      email: Joi.string().email().required(),
+      password: Joi.string(),
+    },
+  }),
+  sessionController.createProvider,
+);
+
+// sessionsRouter.post(
+//   'provider/social-auth/google',
+//   fetchGoogleInfo,
+//   socialAuthController.create,
+// );
+
+// sessionsRouter.post(
+//   'provider/social-auth/facebook',
+//   fetchFacebookInfo,
+//   socialAuthController.createProvider,
+// );
 export default sessionsRouter;
