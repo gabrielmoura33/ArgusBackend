@@ -28,7 +28,7 @@ providersRouter.get('/:provider_id', providersController.show);
 providersRouter.get('/:provider_id/services', providerServiceController.index);
 providersRouter.post('/service', providerServiceController.save);
 
-providersRouter.get(
+providersRouter.post(
   '/:provider_id/month-availability',
   celebrate({
     [Segments.PARAMS]: {
@@ -37,7 +37,7 @@ providersRouter.get(
   }),
   monthAvailabilityController.index,
 );
-providersRouter.get(
+providersRouter.post(
   '/:provider_id/day-availability',
   celebrate({
     [Segments.PARAMS]: {
