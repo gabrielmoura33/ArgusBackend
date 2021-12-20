@@ -12,6 +12,9 @@ import HandlebarsMailTemplateProvider from './MailTemplateProvider/implementatio
 import QueueApiProvider from './QueueProvider/implementations/QueueApiProvider';
 import { IQueueApiProvider } from './QueueProvider/model/IQueueApiProvider';
 
+import StripePaymentProvider from './PaymentProvider/implementations/StripePaymentProvider';
+import IPaymentProvider from './PaymentProvider/model/IPaymentProvider';
+
 container.registerSingleton<IStorageProvider>(
   'StorageProvider',
   DiskStorageProvider,
@@ -25,6 +28,10 @@ container.registerSingleton<IQueueApiProvider>(
 container.registerSingleton<IMailTemplateProvider>(
   'MailTemplateProvider',
   HandlebarsMailTemplateProvider,
+);
+container.registerSingleton<IPaymentProvider>(
+  'PaymentProvider',
+  StripePaymentProvider,
 );
 
 container.registerInstance<IMailProvider>(

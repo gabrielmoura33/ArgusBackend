@@ -18,7 +18,12 @@ class Status {
   appointments: Appointment[];
 
   @Column()
-  status: 'WAITING FOR CONFIRMATION' | 'CONFIRMED' | 'DONE' | 'CANCELED';
+  status:
+    | 'WAITING FOR CONFIRMATION'
+    | 'PAYMENT_CONFIRMED'
+    | 'CONFIRMED'
+    | 'DONE'
+    | 'CANCELED';
 
   @CreateDateColumn()
   created_at: Date;

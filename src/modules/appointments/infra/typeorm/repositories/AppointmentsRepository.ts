@@ -1,4 +1,4 @@
-import { getRepository, Repository, Raw } from 'typeorm';
+import { getRepository, Repository, Raw, Not } from 'typeorm';
 import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentsRepository';
 import ICreateAppointmentsDTO from '@modules/appointments/dtos/ICreateAppointmentDTO';
 import IFindAllInMoutnFromProviderDTO from '@modules/appointments/dtos/IFindAllInMoutnFromProviderDTO';
@@ -16,9 +16,13 @@ class AppointmentsRepository implements IAppointmentsRepository {
     this.ormRepository = getRepository(Appointment);
   }
 
+  findById(id: string): Promise<Appointment | undefined> {
+    return this.ormRepository.findOne({ where: { id } });
+  }
+
   public async findByDate(date: Date): Promise<Appointment | undefined> {
     const findAppointment = await this.ormRepository.findOne({
-      where: { date },
+      where: { date, status: { status: Not('WAITING FOR CONFIRMATION') } },
     });
 
     return findAppointment || undefined;
@@ -94,6 +98,10 @@ class AppointmentsRepository implements IAppointmentsRepository {
 
     await this.ormRepository.save(appointment);
     return appointment;
+  }
+
+  public async save(appointment: Appointment): Promise<Appointment> {
+    return this.ormRepository.save(appointment);
   }
 }
 export default AppointmentsRepository;

@@ -52,6 +52,11 @@ class User {
   })
   avatar: string;
 
+  @Column({
+    nullable: true,
+  })
+  stripe_id: string;
+
   @CreateDateColumn()
   created_at: Date;
 

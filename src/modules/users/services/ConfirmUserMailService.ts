@@ -3,6 +3,7 @@
 import { inject, injectable } from 'tsyringe';
 import AppError from '@shared/errors/AppError';
 import { isAfter, addHours } from 'date-fns';
+import IPaymentProvider from '@shared/container/providers/PaymentProvider/model/IPaymentProvider';
 import IUsersRepository from '../repositories/IUsersRepository';
 import IUserTokensRepository from '../repositories/IUserTokensRepository';
 
@@ -12,6 +13,7 @@ interface IRequest {
 @injectable()
 class ConfirmUserMailService {
   constructor(
+    @inject('PaymentProvider') private paymentProvider: IPaymentProvider,
     @inject('UsersRepository') private userRepository: IUsersRepository,
 
     @inject('UserTokensRepository')
@@ -38,6 +40,14 @@ class ConfirmUserMailService {
       throw new AppError('Token expired');
     }
     user.mail_confirmed = true;
+
+    // Split responsabilities latter
+    const client = await this.paymentProvider.createPaymentClient(
+      user.name,
+      user.email,
+    );
+
+    user.stripe_id = client.id;
 
     await this.userRepository.save(user);
   }

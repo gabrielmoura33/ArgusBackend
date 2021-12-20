@@ -27,6 +27,7 @@ appointmentsRouter.post(
   }),
   appointmentsController.create,
 );
+appointmentsRouter.patch('/:id/status', appointmentsController.changeStatus);
 appointmentsRouter.get('/me', providerAppointmentsController.index);
 
 export default appointmentsRouter;

@@ -7,6 +7,7 @@ import profileRouter from '@modules/users/infra/http/routes/profile.routes';
 import providersRouter from '@modules/appointments/infra/http/routes/providers.routes';
 import addressRouter from '@modules/users/infra/http/routes/address.routes';
 import confirmMailRouter from '@modules/users/infra/http/routes/confirm_mail.routes';
+import paymentsRouter from '@modules/payment/infra/http/routes/payment.routes';
 
 const routes = Router();
 
@@ -18,4 +19,5 @@ routes.use('/password', passwordRoutter);
 routes.use('/profile', profileRouter);
 routes.use('/address', addressRouter);
 routes.use('/confirm_mail', confirmMailRouter);
+routes.use('/payments', paymentsRouter);
 export default routes;
