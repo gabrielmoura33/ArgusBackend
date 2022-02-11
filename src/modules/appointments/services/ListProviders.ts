@@ -10,6 +10,7 @@ import Provider from '../infra/typeorm/entities/Provider';
 interface IRequest {
   user_id: string;
   filters: IFilters<ICreateUserDTO>;
+  category?: string;
   coordinates: {
     latitude: number;
     longitude: number;
@@ -27,6 +28,7 @@ class ListProvidersService {
     user_id,
     filters,
     coordinates,
+    category,
   }: IRequest): Promise<Provider[]> {
     const query: FindManyOptions<Provider> = {};
     const { _limit, _sort, _order, _page, _search } = filters;
@@ -56,20 +58,32 @@ class ListProvidersService {
       ];
     }
 
+    let providers = [];
     if (coordinates.latitude) {
-      const providers = await this.providersRepository.filterByGeolocation(
+      providers = await this.providersRepository.filterByGeolocation(
         coordinates,
         user_id,
         query,
       );
-
-      return classToClass(providers);
     }
 
-    const providers = await this.providersRepository.findAllProviders({
+    providers = await this.providersRepository.findAllProviders({
       except_user_id: user_id,
       filters: query,
     });
+
+    if (category) {
+      const providersFiltered = providers.filter(
+        el =>
+          el.services.filter(
+            service =>
+              service.category.name.toLocaleLowerCase() ===
+              category.toLowerCase(),
+          ).length > 0,
+      );
+
+      return classToClass(providersFiltered);
+    }
 
     return classToClass(providers);
   }

@@ -18,7 +18,7 @@ export default class ProvidersController {
       _count,
       _search,
     }: IFilters<ICreateUserDTO> = request.query;
-    const { _latitude, _longitude, _range } = request.query;
+    const { _latitude, _longitude, _range, category } = request.query;
 
     const listProviders = container.resolve(ListProvidersService);
     const providers = await listProviders.execute({
@@ -37,6 +37,7 @@ export default class ProvidersController {
         longitude: Number(_longitude) || 0,
         range: Number(_range) || 1,
       },
+      category: (category as string) || undefined,
     });
 
     return response.json({

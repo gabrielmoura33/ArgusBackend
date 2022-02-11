@@ -14,6 +14,7 @@ import Address from '@modules/users/infra/typeorm/entities/Address';
 import ProviderInfo from '@modules/users/infra/typeorm/entities/ProviderInfo';
 import Service from './Service';
 import Appointment from './Appointment';
+import Category from './category';
 
 @Entity('providers')
 class Provider {
@@ -71,6 +72,10 @@ class Provider {
   @OneToOne(() => ProviderInfo, { eager: true, cascade: true })
   @JoinColumn({ name: 'provider_info_id' })
   providerInfo: ProviderInfo;
+
+  @OneToOne(() => Category, { eager: true, cascade: true })
+  @JoinColumn({ name: 'category_id' })
+  category: Category;
 
   @Expose({ name: 'avatar_url' })
   get avatarUrl(): string | null {

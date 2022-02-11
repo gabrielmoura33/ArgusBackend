@@ -22,7 +22,7 @@ providersRouter.post('/', providersController.create);
 
 providersRouter.use(ensureAuthenticated);
 providersRouter.get('/', providersController.index);
-providersRouter.get('/argus_users', argusProvidersController.index);
+providersRouter.get('/argus_providers', argusProvidersController.index);
 
 providersRouter.get('/:provider_id', providersController.show);
 providersRouter.get('/:provider_id/services', providerServiceController.index);
